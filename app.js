@@ -31,7 +31,6 @@ app.get('/', async (req, res)=> {
   console.log(mongoRepository.connectionString)
   mongoRepository.create_connection()
   const person = (await sqlRepository.getPerson({'dni':'2840838509607'}))
-  console.log(person)
   const result = await mongoRepository.createPerson(person)
   res.send(result)
 })

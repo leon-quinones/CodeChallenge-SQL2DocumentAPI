@@ -1,12 +1,12 @@
 import pg from 'pg'
-import { parse as uuidParse } from 'uuid';
-
+import { stringify, stringify as uuidStringify } from 'uuid';
 import { IPerson } from '../models/InterfacePerson.js';
 import { ICar } from '../models/InterfaceCar.js';
 import { IPet } from '../models/InterfacePet.js';
 import Person from '../models/Person.js';
 import Car from '../models/Car.js';
 import Pet from '../models/Pet.js';
+import { UUID } from 'mongodb';
 
 const { Pool } = pg
 
@@ -61,6 +61,7 @@ export default class SqlRepository {
         if (personData == undefined || personData.length == 0) {
             return undefined
         }
+        console.log(personData.length)
         const person = this.#createPerson(personData[0])
         person.cars = this.#filteredCreation(personData, this.#createCar)
         person.pets = this.#filteredCreation(personData, this.#createPet)
@@ -82,7 +83,7 @@ export default class SqlRepository {
     static createDto(Interface,prefix, data){
         const keysData = Object.keys(data)
         let entityDto = {}
-        Interface.forEach(field=>{
+        Object.keys(Interface).forEach(field=>{
             keysData.forEach(key=>{
                 if(key ==prefix+field )
                 {
@@ -94,15 +95,17 @@ export default class SqlRepository {
     }
     
     #filteredCreation(data, creationFunc){
+        console.log(data.length)
         const controlId = []
         const entitiesCreated = []
         var entity
         data.forEach(row =>{
             entity = creationFunc(row)
-            console.log(controlId, entity.id)
-            if (!controlId.includes(entity.id)) {
+            const id = stringify(entity.id)    
+            if (!controlId.includes(id)) {
+                entity.id = UUID.createFromHexString(id)
                 entitiesCreated.push(entity)
-                controlId.push(entity.id)
+                controlId.push(id)
             }            
         })
         return entitiesCreated

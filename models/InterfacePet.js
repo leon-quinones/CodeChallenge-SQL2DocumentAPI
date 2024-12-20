@@ -1,7 +1,9 @@
-export const IPet = [
-        'id',
-        'race',
-        'name',
-        'gender'
-    ]
+import { UUID } from "mongodb";
+import { parse as uuidParse } from 'uuid';
+export const IPet = {
+        'id': uuidParse,
+        'race': String,
+        'name': String,
+        'gender': String
+} 
 

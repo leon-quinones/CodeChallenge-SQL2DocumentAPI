@@ -1,13 +1,13 @@
 export default class Entity{
     constructor(entityInterface, entityData){
         this.#init(entityInterface);
-        entityInterface.forEach( field =>{
-            this[field] = entityData[field]
+        Object.keys(entityInterface).forEach( field =>{
+            this[field] = entityInterface[field](entityData[field])
         });
     }
 
     #init(entityInterface){
-        entityInterface.forEach(field => {
+        Object.keys(entityInterface).forEach(field => {
             Object.defineProperty(this, field, {
                 value: null,  
                 writable: true, 

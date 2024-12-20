@@ -1,11 +1,11 @@
 
-export const IPerson = [
-        'first_name',
-        'last_name',
-        'gender', 
-        'dni',
-        'age',
-        'cars',
-        'pets'
-    ];
+export const IPerson = {
+        'first_name': String,
+        'last_name': String,
+        'gender': String, 
+        'dni': String,
+        'age': Number,
+        'cars': Array,
+        'pets': Array
+    };
 
