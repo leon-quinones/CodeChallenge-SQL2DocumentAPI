@@ -3,6 +3,7 @@ import express from 'express';
 
 import SqlRepository from './repositories/SqlRepository.js'
 import MongoRepository from './repositories/MongoRepository.js';
+import { Collection } from 'mongodb';
 
 
 
@@ -14,23 +15,25 @@ const sqlRepository = new SqlRepository({
   password:process.env.SQL_PASSWORD,
   database:process.env.SQL_DBNAME,
   port:process.env.SQL_DBPORT
+
 })
 
 const mongoRepository = new MongoRepository({
-  host:process.env.MONGO_HOST,
-  user:process.env.MONGO_USER,
-  password:process.env.MONGO_PASSWORD,
-  database:process.env.MONGO_DBNAME,
-  port:process.env.MONGO_DBPORT,
+  connectionString: process.env.MONGO_CONNECTION,
+  database: process.env.MONGO_DBNAME,
   collection:process.env.MONGO_DBCOLLECTION
 })
 
+console.log
 
 app.get('/', async (req, res)=> {
   sqlRepository.createConnection()
+  console.log(mongoRepository.connectionString)
+  mongoRepository.create_connection()
   const person = (await sqlRepository.getPerson({'dni':'2840838509607'}))
   console.log(person)
-  res.send(person)
+  const result = await mongoRepository.createPerson(person)
+  res.send(result)
 })
 
 app.listen(process.env.PORT_API, () => {
