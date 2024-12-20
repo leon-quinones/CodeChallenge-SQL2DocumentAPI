@@ -28,24 +28,27 @@ export default class SqlRepository {
         await this.connection.end()
     }
 
-    async getUsers (userDni) {
+    async getUser(searchKeyValue) {
         if (this.connection != undefined) {
+            const key = Object.keys(searchKeyValue)[0]
             const query = {
-                text: 'SELECT p.*, \
-                       c.id as car_id, c.brand as car_brand, c.model as car_model, c.model_year as car_year, \
-                       t.id as pet_id, t.name as pet_name, t.gender as pet_gender, t.race as pet_race \
-                       FROM persons as p \
-                       INNER JOIN cars as c \
-                       ON c.person_id=p.id \
-                       FULL JOIN pets as t \
-                       ON t.person_id=p.id \
-                       WHERE p.dni=$1;',
-                values: [ userDni],
+                text: `SELECT p.*, \
+                        c.id as car_id, c.brand as car_brand, c.model as car_model, c.model_year as car_year, \
+                        t.id as pet_id, t.name as pet_name, t.gender as pet_gender, t.race as pet_race \
+                        FROM persons as p \
+                        INNER JOIN cars as c \
+                        ON c.person_id=p.id \
+                        FULL JOIN pets as t \
+                        ON t.person_id=p.id \
+                        WHERE p.${key}=$1;`,
+                values: [searchKeyValue[key]]
               }            
             return (await this.connection.query(query)).rows
         }
     }
 }
+
+
 
 
 

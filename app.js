@@ -3,9 +3,7 @@ import express from 'express';
 
 import SqlRepository from './repositories/SqlRepository.js'
 import MongoRepository from './repositories/MongoRepository.js';
-import Person from './models/person.js';
-import {IPerson} from './models/InterfacePerson.js'
-import Car from './models/Car.js';
+import PersonService from './services/PersonService.js';
 
 
 const app = express();
@@ -29,14 +27,11 @@ const mongoRepository = new MongoRepository({
 
 
 app.get('/', async (req, res)=> {
-  const person = new Car( 
-    {
-      _id: 'test',
-      brand: 'test',
-      model: 'test',
-      model_year: 'test'
-  }    
-  );
+  sqlRepository.createConnection()
+  const personService = new PersonService(sqlRepository)
+  // const person =await personService.getPerson({'dni':'9782270639272'})
+  const person = (await personService.getPerson({'dni':'9782270639272'}))
+  console.log(person)
   res.send(person)
   // sqlRepository.createConnection()
   // mongoRepository.create_connection()

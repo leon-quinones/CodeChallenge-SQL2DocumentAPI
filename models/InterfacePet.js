@@ -1,5 +1,5 @@
 export const IPet = [
-        '_id',
+        'id',
         'race',
         'name',
         'gender'
