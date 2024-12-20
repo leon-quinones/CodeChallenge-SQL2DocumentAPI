@@ -3,7 +3,7 @@ import express from 'express';
 
 import SqlRepository from './repositories/SqlRepository.js'
 import MongoRepository from './repositories/MongoRepository.js';
-import PersonService from './services/PersonService.js';
+
 
 
 const app = express();
@@ -28,9 +28,7 @@ const mongoRepository = new MongoRepository({
 
 app.get('/', async (req, res)=> {
   sqlRepository.createConnection()
-  const personService = new PersonService(sqlRepository)
-  // const person =await personService.getPerson({'dni':'9782270639272'})
-  const person = (await personService.getPerson({'dni':'9782270639272'}))
+  const person = (await sqlRepository.getPerson({'dni':'2840838509607'}))
   console.log(person)
   res.send(person)
   // sqlRepository.createConnection()

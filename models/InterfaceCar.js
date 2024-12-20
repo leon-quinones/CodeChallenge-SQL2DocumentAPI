@@ -1,6 +1,6 @@
 export const ICar = [
         'id',
         'brand',
-        'model',
+        'model_name',
         'model_year'
     ]

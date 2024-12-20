@@ -1,9 +1,10 @@
 
 export const IPerson = [
-        'firstName',
-        'lastName',
+        'first_name',
+        'last_name',
         'gender', 
         'dni',
+        'age',
         'cars',
         'pets'
     ];
