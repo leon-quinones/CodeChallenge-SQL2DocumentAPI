@@ -3,12 +3,10 @@ import express from 'express';
 
 import SqlRepository from './repositories/SqlRepository.js'
 import MongoRepository from './repositories/MongoRepository.js';
-import PersonService from './services/PersonService.js';
+
 
 
 const app = express();
-const port = 3000;
-// console.log(await pool.query('SELECT * from persons'))
 
 const sqlRepository = new SqlRepository({
   host:process.env.SQL_HOST,
@@ -18,17 +16,23 @@ const sqlRepository = new SqlRepository({
   port:process.env.SQL_DBPORT
 })
 
+const mongoRepository = new MongoRepository({
+  host:process.env.MONGO_HOST,
+  user:process.env.MONGO_USER,
+  password:process.env.MONGO_PASSWORD,
+  database:process.env.MONGO_DBNAME,
+  port:process.env.MONGO_DBPORT,
+  collection:process.env.MONGO_DBCOLLECTION
+})
+
 
 app.get('/', async (req, res)=> {
-
   sqlRepository.createConnection()
-  const personService = new PersonService(sqlRepository)
-  // const person =await personService.getPerson({'dni':'9782270639272'})
-  const person = (await personService.getPerson({'dni':'9782270639272'}))
+  const person = (await sqlRepository.getPerson({'dni':'2840838509607'}))
   console.log(person)
   res.send(person)
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT_API, () => {
   console.log(`listening on port ${process.env.PORT_API}`)
 })
