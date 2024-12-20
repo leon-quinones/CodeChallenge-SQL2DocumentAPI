@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import pg from 'pg'
 import { parse as uuidParse } from 'uuid';
 
@@ -9,20 +8,24 @@ export default class SqlRepository {
         this.connectionParams = connectionParams
     }
 
-    createConnection (connectionParams) {
+    createConnection () {
         try {
             this.connection = new Pool({
-            user:  process.env.SQL_USER,
-            password: process.env.SQL_PASSWORD,
-            host: process.env.SQL_HOST,
-            port: process.env.SQL_DPORT,
-            database: process.env.SQL_DBNAME,
+            user:  this.connectionParams['user'],
+            password: this.connectionParams['password'],
+            host: this.connectionParams['host'],
+            port: this.connectionParams['port'],
+            database: this.connectionParams['database'],
           })
           
         } catch(err) {
             console.log(err)
             this.connection = undefined
         }
+    }
+
+    async close_connection(){
+        await this.connection.end()
     }
 
     async getUsers (userDni) {
