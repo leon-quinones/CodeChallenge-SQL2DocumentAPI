@@ -1,7 +1,10 @@
 import 'dotenv/config'
 import express from 'express';
 
-import SqlRepository from './repositories/sqlrepository.js'
+import SqlRepository from './repositories/SqlRepository.js'
+import MongoRepository from './repositories/MongoRepository.js';
+import PersonService from './services/PersonService.js';
+
 
 const app = express();
 const port = 3000;
@@ -19,14 +22,11 @@ const sqlRepository = new SqlRepository({
 app.get('/', async (req, res)=> {
 
   sqlRepository.createConnection()
-  if (sqlRepository != undefined) {
-    console.log(await sqlRepository.getUsers('9782270639272'))
-    res.send('Hello World!')
-  }
-  else {
-    res.send('lol World!')
-  }
-
+  const personService = new PersonService(sqlRepository)
+  // const person =await personService.getPerson({'dni':'9782270639272'})
+  const person = (await personService.getPerson({'dni':'9782270639272'}))
+  console.log(person)
+  res.send(person)
 })
 
 app.listen(port, () => {
