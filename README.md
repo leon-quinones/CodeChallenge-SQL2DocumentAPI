@@ -5,7 +5,7 @@ REST API to store data from SQL database into a MongoDB Database 🗃️💻 ✨
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project structure](#Project_structure)
-- [Problem solving](#Problem_solving)
+
 
 ## Installation
 
@@ -71,16 +71,18 @@ http://host:API_PORT/persons?dni=yourvalue
 ```
 ### 2 Responses:
 
-🟩 **Status code: 200** - Body: information saved in mongodb database     = Selected person was stored in your mongo database succesfully
-🟧 **Status code: 400** - Error: person already exists in output database = Selected person was previous processed
-🟧 **Status code: 400** - Error: person not found                         = Selected person was not found in your SQL database
+🟩 **Status code: 200** - _Body: information saved in mongodb database_     = Selected person was stored in your mongo database succesfully \
+🟧 **Status code: 400** - _Error: person already exists in output database_ = Selected person was previous processed \
+🟧 **Status code: 400** - _Error: person not found   _                      = Selected person was not found in your SQL database \
 
 
 
 
 ## Project structure
+The project is built using MVC architectural pattern and repository classes as model layer.
+✨The project is easily extensible to others entities models/schemas just defining the car, person and pet interfaces. The respective classes define their fields based on interfaces that are used to initialize each instances.
 
 
-## Problem solving
+
 
 
