@@ -25,9 +25,11 @@ If you're on windows take a look for the [docker desktop guide](https://docs.doc
 SQL_URL: SQL Database Domain
 SQL_USER: your_sql_user
 SQL_PASSWORD: your_password_sql
+SQL_DBNAME: your_db
 MONGO_URL: Mongo Database Domain
 MONGO_USER: your_user_name
 MONGO_PASSWORD: mongo_password
+MONGO_DBNAME: mongo_db
 ```
 if you're running locally use replace the following lines for:
 ```bash

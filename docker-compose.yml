@@ -1,0 +1,54 @@
+services:
+  api:
+      image: leonquinones/challenge_code:0.1.0
+      depends_on:
+        - sqldb
+        - mongodb
+
+      container_name: api-challenge
+      ports:
+        - ${PORT_API}:3000
+      environment:
+        SQL_HOST: ${SQL_HOST}
+        SQL_USER: ${SQL_USER}
+        SQL_PASSWORD: ${SQL_PASSWORD}
+        SQL_DBNAME: ${SQL_DBNAME}
+        SQL_DBPORT: 5432
+        MONGO_USER: ${MONGO_USER}
+        MONGO_PASSWORD: ${MONGO_PASSWORD}        
+        MONGO_DBNAME: ${MONGO_DBNAME}
+        MONGO_CONNECTION: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:27017/
+        MONGO_DBCOLLECTION: ${MONGO_DBCOLLECTION}
+      
+  sqldb:
+    image: postgres:14.3
+    restart: always
+    ports:
+      - ${SQL_DBPORT}:5432
+    environment:
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+      POSTGRES_DB: ${SQL_DBNAME}
+    container_name: ${SQL_HOST}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data     
+
+  mongodb:
+    image: mongo
+    restart: always
+    container_name: ${MONGO_HOST}
+    ports:
+        - ${MONGO_DBPORT}:27017    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo-db:/data/db
+      - mongo-config:/data/configdb
+
+volumes:
+  postgres-db:
+    external: false
+  mongo-db:
+    driver: local
+  mongo-config:
+    driver: local    
