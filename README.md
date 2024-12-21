@@ -56,9 +56,24 @@ docker compose up
 At the first launching, the SQL database is initialized using dummy data that can be found in initializeDatabase method of the sql repository. With the current .env file you will be exposing the ports of your SQL and MongoDb to connect from your local machine. \
 
 ### 1. Migrate user data to mongodb 🔄
-The API Endpoint can be found in host:API_PORT/persons, this considering REST 
-Send a request using HTTP Get method 
+The API Endpoint can be found in:
+```bash
+http://host:API_PORT/persons
+```
+This considering REST principle of Resource-Based interface, so you are migrating people so 'persons' is a good representation. \
+Send a request using HTTP Get method and passing the identification number 'dni/cedula/passport' using the following key value pair structure in your query params:
+```python
+dni: "identification number value" 
+```
+Optional modifying the url:
+```python
+http://host:API_PORT/persons?dni=yourvalue
+```
+### 2 Responses:
 
+🟩 **Status code: 200** - Body: information saved in mongodb database     = Selected person was stored in your mongo database succesfully
+🟧 **Status code: 400** - Error: person already exists in output database = Selected person was previous processed
+🟧 **Status code: 400** - Error: person not found                         = Selected person was not found in your SQL database
 
 
 
