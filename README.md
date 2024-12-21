@@ -41,7 +41,7 @@ SQL_HOST: your sql domain
 MONGO_HOST: your mongo domain
 
 ```
-⚡ In order to use mongo db atlas, add a line with your atlas string connection :
+⚡ In order to use mongo db atlas, add a line with your atlas string connection (NOT IMPLEMENTED IN THE APP DOCKER IMAGE YET!):
 ```bash
 MONGO_CONNECTION: atlas connection string with user and password
 ```
@@ -52,18 +52,18 @@ docker compose up
 
 ## Usage
 
-⚡ The API expose an uniquie endpoint that only accepts GET requests. 
-At the first launching, the SQL database is initialized using dummy data that can be found in initializeDatabase method of the sql repository. With the current .env file you will be exposing the ports of your SQL and MongoDb to connect from your local machine. \
+⚡ The API expose an unique endpoint that only accepts GET requests. 
+At the first launching, the SQL database is initialized using dummy data that can be found in the initializeDatabase method of the sql repository. With the current .env file you will be exposing the ports of your SQL and MongoDb to connect from your local machine. \
 
 ### 1. Migrate user data to mongodb 🔄
 The API Endpoint can be found in:
 ```bash
 http://host:API_PORT/persons
 ```
-This considering REST principle of Resource-Based interface, so you are migrating people so 'persons' is a good representation. \
-Send a request using HTTP Get method and pass a identification number 'dni/cedula/passport' using the following key value pair structure in your query params:
+This considering REST principle of Resource-Based interface, since you are migrating people's info so 'persons' is a good representation. \
+Send a request using HTTP Get method and passing an identification number 'dni/cedula/passport' as the following key value pair structure in your query params:
 ```python
-dni: "identification number value" 
+key:dni, value:identification number value
 ```
 Optional modifying the url:
 ```python
@@ -79,7 +79,7 @@ http://host:API_PORT/persons?dni=yourvalue
 
 
 ## Project structure
-The project is built using MVC architectural pattern and repository classes as model layer.
+The project is built using MVC architectural pattern and repository classes as model layer.\
 ✨The project is easily extensible to others entities models/schemas just defining the car, person and pet interfaces. The respective classes define their fields based on interfaces that are used to initialize each instances.
 
 
