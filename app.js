@@ -27,6 +27,7 @@ const mongoRepository = new MongoRepository({
 
 const controller = new Controller()
 sqlRepository.createConnection()
+sqlRepository.initializeDataBase()
 mongoRepository.createConnection()
 controller.addSqlRepository(sqlRepository)
 controller.addMongoRepository(mongoRepository)
