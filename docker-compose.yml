@@ -1,6 +1,6 @@
 services:
   api:
-      image: leonquinones/challenge_code:0.1.0
+      image: leonquinones/codechallenge:0.1.0
       depends_on:
         - sqldb
         - mongodb
