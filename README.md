@@ -22,27 +22,46 @@ If you're on windows take a look for the [docker desktop guide](https://docs.doc
 3. Copy the docker-compose.yml file of this repository into your app folder.
 4. Create an .env ascii file and paste the following lines in it:
 ```bash
-SQL_URL: SQL Database Domain
-SQL_USER: your_sql_user
-SQL_PASSWORD: your_password_sql
-SQL_DBNAME: your_db
-MONGO_URL: Mongo Database Domain
-MONGO_USER: your_user_name
-MONGO_PASSWORD: mongo_password
-MONGO_DBNAME: mongo_db
+PORT_API=3000
+SQL_HOST=SQLDB
+SQL_USER= your username
+SQL_PASSWORD= yourpassword
+SQL_DBNAME= yourdatabase
+SQL_DBPORT= port to expose sql database
+MONGO_HOST=MONGODB
+MONGO_USER=your mongo user
+MONGO_DBPORT=port to expose mongo database
+MONGO_PASSWORD=your mongo password
+MONGO_DBNAME= your mongo database name
+MONGO_DBCOLLECTION= your mongo collection to save data
 ```
-if you're running locally use replace the following lines for:
+if you are not running locally use replace the following lines for your host domains:
 ```bash
-SQL_URL: POSTGRESDB
-MONGO_URL: MONGODB
+SQL_HOST: your sql domain
+MONGO_HOST: your mongo domain
+
+```
+⚡ In order to use mongo db atlas, add a line with your atlas string connection :
+```bash
+MONGO_CONNECTION: atlas connection string with user and password
 ```
 5. Open a terminal/console, go to your app's folder path and run (for GNU/Linux):
 ```bash
 docker compose up
 ```
 
-
 ## Usage
+
+⚡ The API expose an uniquie endpoint that only accepts GET requests. 
+At the first launching, the SQL database is initialized using dummy data that can be found in initializeDatabase method of the sql repository. With the current .env file you will be exposing the ports of your SQL and MongoDb to connect from your local machine. \
+
+### 1. Migrate user data to mongodb 🔄
+The API Endpoint can be found in host:API_PORT/persons, this considering REST 
+Send a request using HTTP Get method 
+
+
+
+
 
 ## Project structure
 
