@@ -31,7 +31,7 @@ export default class SqlRepository {
         }
     }
 
-    async close_connection(){
+    async closeConnection(){
         await this.connection.end()
     }
 
@@ -43,7 +43,7 @@ export default class SqlRepository {
                         c.id as car_id, c.brand as car_brand, c.model as car_model_name, c.model_year as car_model_year, \
                         t.id as pet_id, t.name as pet_name, t.gender as pet_gender, t.race as pet_race \
                         FROM persons as p \
-                        INNER JOIN cars as c \
+                        LEFT JOIN cars as c \
                         ON c.person_id=p.id \
                         FULL JOIN pets as t \
                         ON t.person_id=p.id \
@@ -56,12 +56,9 @@ export default class SqlRepository {
 
     async getPerson(personKeyValue){
         const personData = (await this.getUser(personKeyValue))
-        console.log('here');
-        console.log(personData)
         if (personData == undefined || personData.length == 0) {
-            return undefined
+            return null
         }
-        console.log(personData.length)
         const person = this.#createPerson(personData[0])
         person.cars = this.#filteredCreation(personData, this.#createCar)
         person.pets = this.#filteredCreation(personData, this.#createPet)
@@ -69,48 +66,65 @@ export default class SqlRepository {
     }
 
     #createPet(petData){
-        return new Pet(SqlRepository.createDto(IPet,'pet_', petData))
+        const dto = SqlRepository.createDto(IPet,'pet_', petData)
+        if (Object.keys(dto).length==0)
+            return null
+        return new Pet(dto)
     }
 
     #createCar(carData){
-        return new Car(SqlRepository.createDto(ICar,'car_', carData))
+        const dto = SqlRepository.createDto(ICar,'car_', carData)
+        if (Object.keys(dto).length==0)
+            return null
+        return new Car(dto)
     }
 
     #createPerson(personData){
-        return new Person(SqlRepository.createDto(IPerson,'', personData))
+        const dto = SqlRepository.createDto(IPerson,'', personData)
+        if (Object.keys(dto).length==0)
+            return null
+        return new Person(dto)
     }
 
     static createDto(Interface,prefix, data){
+        
         const keysData = Object.keys(data)
         let entityDto = {}
         Object.keys(Interface).forEach(field=>{
             keysData.forEach(key=>{
-                if(key ==prefix+field )
+                if(key==prefix+field )
                 {
-                    entityDto[field] = data[key]
+                    if ( data[key]==null){
+                        return 
+                    } else {
+                        entityDto[field] = data[key]
+                    }                        
                 }
             })  
         })
         return entityDto
     }
+
     
     #filteredCreation(data, creationFunc){
-        console.log(data.length)
         const controlId = []
         const entitiesCreated = []
-        var entity
+        let entity
         data.forEach(row =>{
             entity = creationFunc(row)
-            const id = stringify(entity.id)    
-            if (!controlId.includes(id)) {
-                entity.id = UUID.createFromHexString(id)
-                entitiesCreated.push(entity)
-                controlId.push(id)
+            if (entity!=null){
+                const id = stringify(entity.id)
+                if (!controlId.includes(id)) {                
+
+                    entity.id = UUID.createFromHexString(id)
+                    entitiesCreated.push(entity)
+                    controlId.push(id)
+                }            
             }            
         })
         return entitiesCreated
-
     }    
+
 }
 
 

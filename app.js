@@ -3,7 +3,7 @@ import express from 'express';
 
 import SqlRepository from './repositories/SqlRepository.js'
 import MongoRepository from './repositories/MongoRepository.js';
-import { Collection } from 'mongodb';
+import Controller from './controllers/Controller.js';
 
 
 
@@ -24,16 +24,20 @@ const mongoRepository = new MongoRepository({
   collection:process.env.MONGO_DBCOLLECTION
 })
 
-console.log
 
-app.get('/', async (req, res)=> {
-  sqlRepository.createConnection()
-  console.log(mongoRepository.connectionString)
-  mongoRepository.create_connection()
-  const person = (await sqlRepository.getPerson({'dni':'2840838509607'}))
-  const result = await mongoRepository.createPerson(person)
-  res.send(result)
-})
+const controller = new Controller()
+sqlRepository.createConnection()
+mongoRepository.createConnection()
+controller.addSqlRepository(sqlRepository)
+controller.addMongoRepository(mongoRepository)
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+controller.setupRoutes()
+
+app.use('/persons', controller.router);
+
 
 app.listen(process.env.PORT_API, () => {
   console.log(`listening on port ${process.env.PORT_API}`)

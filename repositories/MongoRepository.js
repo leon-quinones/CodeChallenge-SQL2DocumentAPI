@@ -7,20 +7,26 @@ export default class MongoRepository {
         this.connectionString = this.databaseParams['connectionString']//'mongodb://+srv:'+`${this.databaseParams['user']}:${this.databaseParams['password']}@${this.databaseParams['host']}/${this.databaseParams['database']}` 
     }
 
-    create_connection(){
+    createConnection(){
         this.client = new MongoClient(this.connectionString)
         const database = this.client.db(this.databaseParams['database'])
         this.connection = database.collection(this.databaseParams['collection'])
     }
 
-    close_connection(){
+    closeConnection(){
         this.client.off()
     }
 
 
     async createPerson(person){
-        return this.connection.insertOne(person)
+
+        return await this.connection.insertOne(person)
         
+    }
+
+    async getPerson(keySearch){
+ 
+        return await this.connection.findOne(keySearch)
     }
 }
 
