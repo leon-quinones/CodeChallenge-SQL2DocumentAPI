@@ -61,7 +61,7 @@ The API Endpoint can be found in:
 http://host:API_PORT/persons
 ```
 This considering REST principle of Resource-Based interface, so you are migrating people so 'persons' is a good representation. \
-Send a request using HTTP Get method and passing the identification number 'dni/cedula/passport' using the following key value pair structure in your query params:
+Send a request using HTTP Get method and pass a identification number 'dni/cedula/passport' using the following key value pair structure in your query params:
 ```python
 dni: "identification number value" 
 ```
